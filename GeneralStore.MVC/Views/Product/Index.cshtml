@@ -4,9 +4,15 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Products</h2>
 <p>
-    @Html.ActionLink("Create a Product", "Create")
+    Our General Store, located in rural Indiana, is host to a multitude of fine food and items of distinction.<br />
+    Come browse our products and see what we have for you.
+</p>
+<p>
+
+    @Html.ActionLink("Check Products", "Index", "Product", null, new { @class = "btn btn-primary btn-large" })
+
 </p>
 
 <table class="table">
