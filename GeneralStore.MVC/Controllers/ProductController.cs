@@ -10,13 +10,14 @@ namespace GeneralStore.MVC.Controllers
     public class ProductController : Controller
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
+        
         // GET: Product
         public ActionResult Index()
         {
             return View(_db.Products.ToList());
         }
 
-        //GET: Product
+        //GET: Product / Create
         public ActionResult Create()
         {
             return View();
@@ -24,6 +25,7 @@ namespace GeneralStore.MVC.Controllers
 
         // POST: Product
         [HttpPost]
+       
         public ActionResult Create(Product product)
         {
             if (ModelState.IsValid)
@@ -33,6 +35,24 @@ namespace GeneralStore.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
+            return View(product);
+        }
+
+        // GET : Delete
+        // Product/Delete/{id}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            Product product = _db.Products.Find(id);
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
             return View(product);
         }
     }
