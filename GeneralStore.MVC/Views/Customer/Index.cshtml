@@ -1,13 +1,12 @@
 ﻿@model IEnumerable<GeneralStore.MVC.Models.Customer>
+
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
 <h2>Customers</h2>
 <p>
-   Insert description
+    Please find our top customer list below.
 </p>
 <p>
 
@@ -26,7 +25,7 @@
         <th>
             @Html.DisplayNameFor(model => model.FullName)
         </th>
-       </th>
+        
     </tr>
     @foreach (var item in Model)
     {
