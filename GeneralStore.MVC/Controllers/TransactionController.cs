@@ -17,6 +17,17 @@ namespace GeneralStore.MVC.Controllers
         {
             return View(_db.Transactions.ToArray());
         }
+        //GET: Transaction/{id}
+        [Route("{id}")]
+        public ActionResult Details(int id)
+        {
+            Transaction transaction = _db.Transactions.Find(id);
+            if(transaction == null)
+            {
+                return HttpNotFound();
+            }
+            return View(transaction);
+        }
         //Viewdata/viewbags
         //GET: Transaction/Create
         public ActionResult Create()
@@ -79,7 +90,51 @@ namespace GeneralStore.MVC.Controllers
             {
                 return View("NotFound");
             }
-            ViewData["Customers"]
+            ViewData["Customers"] = _db.Customers.Select(p => new SelectListItem
+            {
+                Text = p.FullName,
+                Value = p.CustomerID.ToString()
+            });
+            ViewData["Products"] = _db.Products.Select(p => new SelectListItem
+            {
+                Text = p.Name,
+                Value = p.ProductID.ToString()
+            });
+
+            return View(transaction);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit (Transaction model)
+        {
+            ViewData["Customers"] = _db.Customers.Select(p => new SelectListItem
+            {
+                Text = p.FullName,
+                Value = p.CustomerID.ToString()
+            });
+            ViewData["Products"] = _db.Products.Select(p => new SelectListItem
+            {
+                Text = p.Name,
+                Value = p.ProductID.ToString()
+            });
+
+            Transaction transaction = _db.Transactions.Find(model.TransactionID);
+            transaction.CustomerID = model.CustomerID;
+            transaction.ProductID = model.ProductID;
+            _db.SaveChanges();
+            //whenver an error happens, you can do something like this
+
+            if (model.CustomerID != 1)
+                {
+                ViewData["ErrorMessage"] = "You didn't pick me!";
+                return View(model);
+                }
+            if (model.ProductID > 2)
+            {
+                ViewData["ErrorMessage"] = "Wrong number";
+            }
+            return View(model);
         }
     }
 }
